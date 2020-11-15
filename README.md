@@ -1,6 +1,4 @@
-# dooleyhack2020
-DooleyHacks project
-
+# Stocks and Strings Duo 
 NLP - parse News articles and predict change in respective stock prices
 
 ## Project Goals
