@@ -1,0 +1,7 @@
+.idea/
+DooleyHacks2020.iml
+**/*.class
+env/
+venv/
+.vscode/
+__pycache__/
