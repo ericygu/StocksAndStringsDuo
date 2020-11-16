@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Feb 22 13:33:15 2020
-
-@author: Kyle
-"""
 
 # relies on JSON input of the form
 # {title -> string, author -> string, time -> datetime, text -> string}
