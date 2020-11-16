@@ -1,7 +1,7 @@
 import json
 import re
 
-API_KEY = '66c2e12a4d234e33b3df8d3057ea4a5a'
+API_KEY = 'e29a0aa451594ffb9fc134d9994fad4d'
 
 
 def get_articles(source='bbc-news'):
@@ -57,8 +57,8 @@ def read_articles():
 
 if __name__ == '__main__':
     sources = ['bbc-news', 'abc-news', 'australian-financial-review',
-               'business-insider', 'business-insider-uk', 'cnbc', 'financial-post',
-               'fortune', 'the-wall-street-journal']
+               'business-insider', 'business-insider-uk', 'cnn', 'crypto-coins-news', 'financial-post',
+               'fortune', 'fox-news', 'techcrunch', 'techradar', 'the-wall-street-journal']
     articles = []
     for source in sources:
         articles += get_articles(source)
