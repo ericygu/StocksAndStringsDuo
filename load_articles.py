@@ -12,7 +12,7 @@ def get_articles(source='bbc-news'):
         return newsapi.get_everything(
             q='facebook',
             sources=source,
-            from_param='2020-10-16',
+            from_param='2020-10-30',
             language='en',
             sort_by='relevancy',
             page=n
