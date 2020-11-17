@@ -1,9 +1,6 @@
 import json
 from load_articles import read_articles
 
-dictionary = {}
-net_words = 0
-
 
 # think about how keywords are set to values
 # format {'potato': 4, 'oil': 1}
@@ -35,6 +32,8 @@ def read_dictionary():
 
 
 if __name__ == '__main__':
+    dictionary = {}
+    net_words = 0
     articles = read_articles()
     articles_length = len(articles)
     # divineRatio = (instance of word)/networds

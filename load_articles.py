@@ -3,7 +3,7 @@ import re
 
 
 def get_articles(source='bbc-news'):
-    API_KEY = '4a29cebec09f41ef91e8aa5964e70d7a'
+    API_KEY = '73d87d08144742b1bd35034692f0502e'
     from newsapi import NewsApiClient
     newsapi = NewsApiClient(api_key=API_KEY)
 
