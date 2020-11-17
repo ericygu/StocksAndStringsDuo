@@ -1,7 +1,7 @@
 import json
 import re
 
-API_KEY = 'e29a0aa451594ffb9fc134d9994fad4d'
+API_KEY = '4a29cebec09f41ef91e8aa5964e70d7a'
 
 
 def get_articles(source='bbc-news'):
@@ -12,7 +12,7 @@ def get_articles(source='bbc-news'):
         return newsapi.get_everything(
             q='facebook',
             sources=source,
-            from_param='2020-11-15',
+            from_param='2020-10-16',
             language='en',
             sort_by='relevancy',
             page=n
@@ -63,3 +63,4 @@ if __name__ == '__main__':
     for source in sources:
         articles += get_articles(source)
     write_articles(articles)
+
