@@ -1,10 +1,9 @@
 import json
 import re
 
-API_KEY = '4a29cebec09f41ef91e8aa5964e70d7a'
-
 
 def get_articles(source='bbc-news'):
+    API_KEY = '4a29cebec09f41ef91e8aa5964e70d7a'
     from newsapi import NewsApiClient
     newsapi = NewsApiClient(api_key=API_KEY)
 
