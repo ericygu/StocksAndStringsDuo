@@ -5,13 +5,29 @@ from sklearn import preprocessing
 from sklearn import model_selection as ms
 from tqdm import tqdm
 
-def model_assessment(xTrain, xTest):
+def normalization(xTrain, xTest):
     scaler = preprocessing.StandardScaler()
     xTrain = scaler.fit_transform(xTrain)
     xTest = scaler.trasnform(xTest)
     return xTrain, xTest
 
+# Unedited, can you unnormalized data
+def pearson_graph(dfx, dfy):
+    df = dfx.copy(deep=True)
+    df['target'] = pd.Series(dfy['label'])
+    correlation_matrix = df.corr(method='pearson')
+    # sns.heatmap(correlation_matrix, annot=True)
+    fig, ax = plt.subplots(figsize=(10,10))
+    sns.heatmap(correlation_matrix)
+    plt.show()
+    return None
+
+def json_to_df():
+    
+    return x, y
+
 def process():
+    # Acquire dataset
     exec(open("./load_articles.py").read())
     exec(open("./form_dictionary.py").read())
     exec(open("./form_keywords.py").read())
@@ -19,13 +35,34 @@ def process():
     exec(open("./value_keywords.py").read())
     
     # transform to csv and obtain xTrain, yTrain, xTest, yTest
-    # Turning json data to csv data
+    # Turning json data to csv data in either numpy format or df format
+    x, y = json_to_df()
+    
+    # dataset spltting (cross validation)
     xTrain, yTrain, xTest, yTest = 1,2,3,4
 
-    xTrain, xTest = model_assessment(xTrain, xTest)
+
+    xTrain, xTest = normalization(xTrain, xTest)
+
+    # Write to csv files
+    xTrain.to_csv("xTrain", index=False)
+    yTrain.to_csv("yTrain", index=False)
+    xTest.to_csv("xTest", index=False)
+    yTest.to_csv("yTest", index=False)
 
     print("Preprocessing Done")
-    return xTrain, yTrain, xTest, yTest
+    return None
+
+# testing purposes
+"""
+def main():
+    xTrain, yTrain, xTest, yTest = process()
+    pearson_graph()
+
+if __name__ == '__main__':
+    main()
+"""
+    
 
 
 

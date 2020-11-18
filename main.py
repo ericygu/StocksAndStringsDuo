@@ -10,12 +10,25 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
-
 import preprocessing
+
+def file_to_numpy(filename):
+    """
+    Read an input file and convert it to numpy
+    """
+    df = pd.read_csv(filename)
+    return df.to_numpy()
+
+def graph():
 
 def main():
    # Create xTrain, yTrain, xTest, yTest
-   xTrain, yTrain, xTest, yTest = preprocessing.process()
+   preprocessing.process()
+
+   xTrain = file_to_numpy("xTrain")
+   yTrain = file_to_numpy("yTrain")
+   xTest = file_to_numpy("xTest")
+   yTest = file_to_numpy("yTest")
 
    # Linear Regression (Closed)
    lr = LinearRegression.fit_transform(xTrain)
@@ -37,6 +50,7 @@ def main():
    yHat_elr = elr.predict(xTest)
    elr_testAcc = accuracy_score(yTest, yHat_elr)
 
+   # Print Statistics
    print("Model Accuracies")
    print("Linear Regression (Closed): ", lr_testAcc)
    print("Lasso Regression: ", lasr_testAcc)
