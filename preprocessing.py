@@ -28,11 +28,15 @@ def json_to_df():
 
 def process():
     # Acquire dataset
+    # Don't run this again, it generates new data and replaces what we have. We will have to write something that adds to current data later.
+    # I took care of reading from the current data files and converting them to dataframes/csv. -Nathan
+    """
     exec(open("./load_articles.py").read())
     exec(open("./form_dictionary.py").read())
     exec(open("./form_keywords.py").read())
     exec(open("./stock_parse.py").read())
     exec(open("./value_keywords.py").read())
+    """
     
     # transform to csv and obtain xTrain, yTrain, xTest, yTest
     # Turning json data to csv data in either numpy format or df format
