@@ -36,27 +36,29 @@ def main():
 
     # K-fold cv
     kf = KFold(n_splits=10)
-    xTraining, xVal, yTraining, yVal = kf.split(xTrain, yTrain)
+    for train_index, test_index in kf.split(xTrain):
+        x_train, x_test = xTrain[train_index], xTrain[test_index]
+        y_train, y_test = yTrain[train_index], yTest[test_index]
 
     # Linear Regression (Closed)
-    lr = LinearRegression.fit_transform(xTrain)
-    yHat_lr = lr.predict(xTest)
-    lr_testAcc = accuracy_score(yTest, yHat_lr)
+    lr = LinearRegression.fit_transform(x_train)
+    yHat_lr = lr.predict(x_test)
+    lr_testAcc = accuracy_score(y_test, yHat_lr)
 
     # Lasso Regression
-    lasr = Lasso.fit_transform(xTrain)
-    yHat_lasr = lasr.predict(xTest)
-    lasr_testAcc = accuracy_score(yTest, yHat_lasr)
+    lasr = Lasso.fit_transform(x_train)
+    yHat_lasr = lasr.predict(x_test)
+    lasr_testAcc = accuracy_score(y_test, yHat_lasr)
 
     # Ridge Regression
-    ridr = Ridge.fit_transform(xTrain)
-    yHat_ridr = ridr.predict(xTest)
-    ridr_testAcc = accuracy_score(yTest, yHat_ridr)
+    ridr = Ridge.fit_transform(x_train)
+    yHat_ridr = ridr.predict(x_test)
+    ridr_testAcc = accuracy_score(y_test, yHat_ridr)
 
     # ElasticNet
-    elr = ElasticNet.fit_transform(xTrain)
-    yHat_elr = elr.predict(xTest)
-    elr_testAcc = accuracy_score(yTest, yHat_elr)
+    elr = ElasticNet.fit_transform(x_train)
+    yHat_elr = elr.predict(x_test)
+    elr_testAcc = accuracy_score(y_test, yHat_elr)
 
     # Print Statistics
     print("Model Accuracies")
