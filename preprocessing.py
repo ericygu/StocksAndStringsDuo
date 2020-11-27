@@ -40,8 +40,8 @@ def process():
     """
 
     n = 5194 # number of keywords to include in the dataset
-    X, y = json_to_df(n)
-	X.to_csv("x")
+    x, y = json_to_df(n)
+	x.to_csv("x")
 	y.to_csv("y")
 
     xTrain, xTest, yTrain, yTest = ms.train_test_split(x, y, test_size = 0.2)
