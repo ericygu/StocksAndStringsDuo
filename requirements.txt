@@ -4,4 +4,11 @@ idna==2.10
 newsapi-python==0.2.6
 requests==2.25.0
 urllib3==1.26.2
-nltk
+nltk~=
+numpy~=1.19.0
+pandas~=1.0.5
+matplotlib~=3.3.1
+seaborn~=0.11.0
+scikit-learn~=0.23.2
+nltk~=3.5
+tqdm~=4.50.0

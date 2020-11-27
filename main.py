@@ -13,12 +13,14 @@ from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.model_selection import KFold
 import preprocessing
 
+
 def file_to_numpy(filename):
     """
     Read an input file and convert it to numpy
     """
     df = pd.read_csv(filename)
     return df.to_numpy()
+
 
 def graph():
     return
