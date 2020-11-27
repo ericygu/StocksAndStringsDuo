@@ -21,6 +21,7 @@ def file_to_numpy(filename):
     return df.to_numpy()
 
 def graph():
+    return
 
 def main():
     # Create xTrain, yTrain, xTest, yTest
@@ -33,7 +34,7 @@ def main():
 
     # K-fold cv
     kf = KFold(n_splits=10)
-    xTrain, xTest, yTrain, yTest = kf.split(x, y)
+    xTraining, xVal, yTraining, yVal = kf.split(xTrain, yTrain)
 
     # Linear Regression (Closed)
     lr = LinearRegression.fit_transform(xTrain)
