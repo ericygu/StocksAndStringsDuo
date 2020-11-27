@@ -46,7 +46,7 @@ def json_to_df(nkeywords):
 	y = pd.DataFrame(labels, timeframe, ['stock_change'])
 	return X, y
     
-
+"""
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("x_name", help="name for feature matrix csv file (remember to include .csv)")
@@ -61,4 +61,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
+"""
