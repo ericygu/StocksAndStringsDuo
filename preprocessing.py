@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn import preprocessing
 from sklearn import model_selection as ms
+from form_csv import json_to_df
 from tqdm import tqdm
 
 def normalization(xTrain, xTest):
@@ -22,10 +23,6 @@ def pearson_graph(dfx, dfy):
     plt.show()
     return None
 
-def json_to_df():
-    
-    return x, y
-
 def process():
     # Acquire dataset
     # Don't run this again, it generates new data and replaces what we have. We will have to write something that adds to current data later.
@@ -36,24 +33,25 @@ def process():
     exec(open("./form_keywords.py").read())
     exec(open("./stock_parse.py").read())
     exec(open("./value_keywords.py").read())
-    """
-    
-    # transform to csv and obtain xTrain, yTrain, xTest, yTest
+
+    # transform to csv and obtain xTrain, yTrain
     # Turning json data to csv data in either numpy format or df format
-    x, y = json_to_df()
+    exec(open("./form_csv.py").read())
+    """
+
+    n = 5194 # number of keywords to include in the dataset
+    x, y = json_to_df(n)
+	x.to_csv("x")
+	y.to_csv("y")
+
+    xTrain, xTest, yTrain, yTest = ms.train_test_split(x, y, test_size = 0.2)
+    x_norm = normalization(x)
     
-    # dataset spltting (cross validation)
-    xTrain, yTrain, xTest, yTest = 1,2,3,4
-
-
-    xTrain, xTest = normalization(xTrain, xTest)
-
-    # Write to csv files
-    xTrain.to_csv("xTrain", index=False)
-    yTrain.to_csv("yTrain", index=False)
-    xTest.to_csv("xTest", index=False)
-    yTest.to_csv("yTest", index=False)
-
+    xTrain.to_csv("xTrain")
+    xTest.to_csv("xTest")
+    yTrain.to_csv("yTrain")
+    yTest.to_csv("yTest")
+    
     print("Preprocessing Done")
     return None
 
