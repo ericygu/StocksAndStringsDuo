@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 from load_articles import read_articles
 from get_keywords import read_keywords
+from stock_parse import read_hourlyStock
 
 def json_to_df(nkeywords):
 
@@ -20,20 +21,21 @@ def json_to_df(nkeywords):
 		diff = dt_end-dt_start
 		tot_hours = diff.days*24+diff.seconds/3600+1
 		timeframe = pd.date_range(start=str(dt_start), end=str(dt_end), periods=tot_hours)
-    return timeframe
+		return timeframe
 
 	data = read_articles()
-	data = sorted(data, key = lambda entry:get_datetime(entry))
 	keywords = read_keywords()[0:nkeywords]
+	hourlyStock = read_hourlyStock()
+	data = sorted(data, key = lambda entry:get_datetime(entry))
 	timeframe = get_timeframe(data)
 	feat_mat = np.zeros((len(timeframe), len(keywords)), int)
-	labels = np.zeros(len(timeframe))
+	labels = np.array(list(hourlyStock.values()))
 	
 	j = 0
 	for i in range(len(timeframe)):
-		if timeframe[i]==get_dtnearest_hr(data[j]):
-			labels[i] = data[j]['delta']
-			while timeframe[i]==get_dtnearest_hr(data[j]):
+		if j<len(data) and timeframe[i]==get_dtnearest_hr(data[j]):
+			#labels[i] = data[j]['delta']
+			while j<len(data) and timeframe[i]==get_dtnearest_hr(data[j]):
 				feat_row = [1 if keyword in data[j]['keywords'] else 0 for keyword in keywords]
 				feat_mat[i] += feat_row
 				j += 1
@@ -41,10 +43,10 @@ def json_to_df(nkeywords):
 			feat_mat[i] = feat_mat[i-1]
 
 	X = pd.DataFrame(feat_mat, timeframe, keywords)
-	y = pd.DataFrame(labels, timeframe, keywords)
+	y = pd.DataFrame(labels, timeframe, ['stock_change'])
 	return X, y
     
-"""
+
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("x_name", help="name for feature matrix csv file (remember to include .csv)")
@@ -59,4 +61,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-"""
+
