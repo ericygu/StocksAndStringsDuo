@@ -43,9 +43,15 @@ def process():
     X, y = json_to_df(n)
 	X.to_csv("x")
 	y.to_csv("y")
-    
-    x_norm = normalization(x)
 
+    xTrain, xTest, yTrain, yTest = ms.train_test_split(x, y, test_size = 0.2)
+    x_norm = normalization(x)
+    
+    xTrain.to_csv("xTrain")
+    xTest.to_csv("xTest")
+    yTrain.to_csv("yTrain")
+    yTest.to_csv("yTest")
+    
     print("Preprocessing Done")
     return None
 
