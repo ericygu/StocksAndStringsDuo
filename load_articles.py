@@ -6,7 +6,7 @@ def get_articles(source='bbc-news'):
     API_KEY = 'c5e0b0b4579141baafd7e2f43e55da78'
     from newsapi import NewsApiClient
     newsapi = NewsApiClient(api_key=API_KEY)
-
+    # Pull New Data 12/4
     def get_page(n):
         return newsapi.get_everything(
             q='facebook',
