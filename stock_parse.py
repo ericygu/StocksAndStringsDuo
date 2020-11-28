@@ -5,8 +5,16 @@
 import json  # will use
 import datetime
 import requests
+import pandas as pd
 from load_articles import read_articles, write_articles
 
+def write_hourlyStock(hourlyStock):
+    with open('hourlyStock.json', 'w') as fp:
+        json.dump(hourlyStock, fp)
+
+def read_hourlyStock():
+    with open('hourlyStock.json') as f:
+        return json.load(f)
 
 def updateJSON_prices(sym):
 
@@ -50,8 +58,34 @@ def updateJSON_prices(sym):
 
         return (t, y)
 
+    def get_datetime(article):
+        return datetime.datetime.strptime(article['date_published'], "%Y-%m-%dT%H:%M:%SZ")
+
+    def get_dtnearest_hr(article):
+        return (get_datetime(article) - datetime.timedelta(hours=5)).replace(second=0, minute=0)
+
+    def get_timeframe(data):
+        dt_start = get_dtnearest_hr(data[0])
+        dt_end = get_dtnearest_hr(data[-1])
+        diff = dt_end-dt_start
+        tot_hours = diff.days*24+diff.seconds/3600+1
+        timeframe = pd.date_range(start=str(dt_start), end=str(dt_end), periods=tot_hours)
+        return timeframe
+
+    #Updates hourlyStock
     dailyDat = rqstStockTSDataDaily(sym)
     dat = read_articles()
+    dat = sorted(dat, key = lambda entry:get_datetime(entry))
+    timeframe = get_timeframe(dat)
+    hourlyStock = dict.fromkeys(timeframe)
+    for t in timeframe:
+        result = getTSDataDailyForceSuccessFuture(dailyDat, t, 1000)
+        hourlyStock[t] = result[1]["close"] - result[1]["open"]
+    hourlyStock = {str(k):v for k,v in hourlyStock.items()}
+    write_hourlyStock(hourlyStock)
+
+    #Updates the articles with delta values
+    """ 
     for article in dat:
         # round down to nearest hour
         t = (datetime.datetime.strptime(
@@ -68,6 +102,7 @@ def updateJSON_prices(sym):
                 article["const"] = False
 
     write_articles(dat)
+    """
 
 
 ###################################TEST CODE HERE###################################

@@ -25,6 +25,7 @@ def file_to_numpy(filename):
 def graph():
     return
 
+
 def main():
     # Create xTrain, yTrain, xTest, yTest
     preprocessing.process()
@@ -77,6 +78,7 @@ def main():
     print("Lasso Regression: ", lasr_testAcc)
     print("Ridge Regression: ", ridr_testAcc)
     print("Elastic Net: ", elr_testAcc)
+
 
 if __name__ == '__main__':
     main()
