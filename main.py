@@ -35,11 +35,22 @@ def main():
     yTrain = file_to_numpy("yTrain")
     yTest = file_to_numpy("yTest")
 
+    # temp
+    x_train = xTrain
+    y_train = yTrain
+    x_test = xTest
+    y_test = yTest
+
     # K-fold cv
+    """
     kf = KFold(n_splits=10)
     for train_index, test_index in kf.split(xTrain):
         x_train, x_test = xTrain[train_index], xTrain[test_index]
         y_train, y_test = yTrain[train_index], yTest[test_index]
+    """
+    
+    # cross_val_score
+    # GridSearchCV
 
     # Linear Regression (Closed)
     lr = LinearRegression.fit_transform(x_train)
