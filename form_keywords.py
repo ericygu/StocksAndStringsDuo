@@ -2,8 +2,8 @@ import json
 from load_articles import read_articles, write_articles
 from form_dictionary import read_dictionary
 
-def parse_keywords(articles, dictionary):
 
+def parse_keywords(articles, dictionary):
     def get_keywords(text, dictionary):
         word_list = text.split(' ')
         word_ratio = {word: text.count(word) / len(word_list)
