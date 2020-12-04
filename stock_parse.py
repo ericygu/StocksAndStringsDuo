@@ -85,7 +85,6 @@ def updateJSON_prices(sym):
     write_hourlyStock(hourlyStock)
 
     #Updates the articles with delta values
-    """ 
     for article in dat:
         # round down to nearest hour
         t = (datetime.datetime.strptime(
@@ -102,7 +101,6 @@ def updateJSON_prices(sym):
                 article["const"] = False
 
     write_articles(dat)
-    """
 
 
 ###################################TEST CODE HERE###################################
