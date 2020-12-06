@@ -20,18 +20,26 @@ def normalization(xTrain, xTest):
 
 def extract_features(df):
     df['datetime'] = pd.to_datetime(df['datetime'], format="%Y-%m-%d %H:%M:%S")
+    """
     df['year'] = df['datetime'].dt.year
     df['month'] = df['datetime'].dt.month
     df['day'] = df['datetime'].dt.day
     df['weekday'] = df['datetime'].dt.dayofweek
     df['hour'] = df['datetime'].dt.hour
+    """
+    df.insert(loc=0, column='year', value=df['datetime'].dt.year, allow_duplicates=True)
+    df.insert(loc=0, column='month', value=df['datetime'].dt.month, allow_duplicates=True)
+    df.insert(loc=0, column='day', value=df['datetime'].dt.day, allow_duplicates=True)
+    df.insert(loc=0, column='dayofweek', value=df['datetime'].dt.dayofweek, allow_duplicates=True)
+    df.insert(loc=0, column='hour', value=df['datetime'].dt.hour, allow_duplicates=True)
     df = df.drop(columns=['datetime'])
     return df
 
 # no need for normalized data with pearson correlation graph
 def pearson_graph(dfx, dfy):
     df = dfx.copy(deep=True)
-    df['target'] = dfy['stock_change']
+    #df['target'] = dfy['stock_change']
+    df.insert(loc=0, column='target', value=dfy['stock_change'], allow_duplicates=True)
     correlation_matrix = df.corr(method='pearson')
     # sns.heatmap(correlation_matrix, annot=True)
     #fig, ax = plt.subplots(figsize=(10, 10))
