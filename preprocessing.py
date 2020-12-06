@@ -7,13 +7,15 @@ from form_csv import json_to_df
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import seaborn as sns
-import copy
 
 
 def normalization(xTrain, xTest):
     std_scale = preprocessing.StandardScaler()
+    cols = list(xTrain.columns)
     xTrain = std_scale.fit_transform(xTrain)
     xTest = std_scale.transform(xTest)
+    xTrain = pd.DataFrame(xTrain, columns=cols)
+    xTest = pd.DataFrame(xTest, columns=cols)
     return xTrain, xTest
 
 def extract_features(df):
@@ -28,13 +30,13 @@ def extract_features(df):
 
 # no need for normalized data with pearson correlation graph
 def pearson_graph(dfx, dfy):
-    df = copy.deepcopy(dfx)
+    df = dfx.copy(deep=True)
     df['target'] = dfy['stock_change']
     correlation_matrix = df.corr(method='pearson')
     # sns.heatmap(correlation_matrix, annot=True)
-    fig, ax = plt.subplots(figsize=(10, 10))
-    sns.heatmap(correlation_matrix)
-    plt.show()
+    #fig, ax = plt.subplots(figsize=(10, 10))
+    #sns.heatmap(correlation_matrix)
+    #plt.show()
     return None
 
 
@@ -74,11 +76,11 @@ def process():
     yTest.to_csv("yTest_orig", index=False)
     """
 
-    # normalize the x data
-    xTrain, xTest = normalization(xTrain, xTest)
-
     # Pearson graph of features with datetime extracted (can be commented out to not show pearson correlation graph)
     pearson_graph(xTrain, yTrain)
+
+    # normalize the x data
+    xTrain, xTest = normalization(xTrain, xTest)
 
     # convert dataframes to csv files
     xTrain.to_csv("xTrain", index=False)
