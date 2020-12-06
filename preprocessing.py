@@ -29,7 +29,7 @@ def extract_features(df):
 # no need for normalized data with pearson correlation graph
 def pearson_graph(dfx, dfy):
     df = copy.deepcopy(dfx)
-    df['target'] = pd.Series(dfy['label'])
+    df['target'] = dfy['stock_change']
     correlation_matrix = df.corr(method='pearson')
     # sns.heatmap(correlation_matrix, annot=True)
     fig, ax = plt.subplots(figsize=(10, 10))
