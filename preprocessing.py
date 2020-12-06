@@ -83,10 +83,10 @@ def process():
     xTrain, xTest = normalization(xTrain, xTest)
 
     # convert dataframes to csv files
-    xTrain.to_csv("xTrain", index=False)
-    xTest.to_csv("xTest", index=False)
-    yTrain.to_csv("yTrain", index=False)
-    yTest.to_csv("yTest", index=False)
+    xTrain.to_csv("xTrain.csv", index=False)
+    xTest.to_csv("xTest.csv", index=False)
+    yTrain.to_csv("yTrain.csv", index=False)
+    yTest.to_csv("yTest.csv", index=False)
 
     print("Preprocessing Done")
     return None
