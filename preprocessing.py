@@ -7,6 +7,7 @@ from form_csv import json_to_df
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import seaborn as sns
+import copy
 
 
 def normalization(xTrain, xTest):
@@ -27,7 +28,7 @@ def extract_features(df):
 
 # no need for normalized data with pearson correlation graph
 def pearson_graph(dfx, dfy):
-    df = dfx.copy(deep=True)
+    df = copy.deepcopy(dfx)
     df['target'] = pd.Series(dfy['label'])
     correlation_matrix = df.corr(method='pearson')
     # sns.heatmap(correlation_matrix, annot=True)
