@@ -20,7 +20,7 @@ def extract_features(df):
     df['year'] = df['datetime'].dt.year
     df['month'] = df['datetime'].dt.month
     df['day'] = df['datetime'].dt.day
-    df['weekday'] = df['datetime'].dt.weekday()
+    df['weekday'] = df['datetime'].dt.dayofweek
     df['hour'] = df['datetime'].dt.hour
     df = df.drop(columns=['datetime'])
     return df
@@ -53,8 +53,10 @@ def process():
     exec(open("./form_csv.py").read())
     """
     # convert data from json to dataframe
-    n = 5194  # number of keywords to include in the dataset
-    x, y = json_to_df(n)
+    #n = 5194  # number of keywords to include in the dataset
+    #x, y = json_to_df(n)
+    x = pd.read_csv('X.csv')
+    y = pd.read_csv('Y.csv')
 
     # extract features of datetime column
     x = extract_features(x)
