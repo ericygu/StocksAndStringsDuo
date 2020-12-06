@@ -16,13 +16,13 @@ def normalization(xTrain, xTest):
     return xTrain, xTest
 
 def extract_features(df):
-    df['date'] = pd.to_datetime(df['date'])
-    df['year'] = df['date'].dt.year
-    df['month'] = df['date'].dt.month
-    df['day'] = df['date'].dt.day
-    df['hour'] = df['date'].dt.hour
-    df['minute'] = df['date'].dt.minute
-    df = df.drop(columns=['date'])
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    df['year'] = df['datetime'].dt.year
+    df['month'] = df['datetime'].dt.month
+    df['day'] = df['datetime'].dt.day
+    df['weekday'] = df['datetime'].dt.weekday()
+    df['hour'] = df['datetime'].dt.hour
+    df = df.drop(columns=['datetime'])
     return df
 
 # no need for normalized data with pearson correlation graph
@@ -59,7 +59,7 @@ def process():
     # extract features of datetime column
     x = extract_features(x)
     # drop datetime column from y data
-    y = y.drop(columns=['date'])
+    y = y.drop(columns=['datetime'])
 
     # split data into training set and test set
     xTrain, xTest, yTrain, yTest = ms.train_test_split(x, y, test_size=0.2)
@@ -88,10 +88,8 @@ def process():
 
 
 # testing purposes
-"""
 def main():
     process()
 
 if __name__ == '__main__':
     main()
-"""
