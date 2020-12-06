@@ -16,7 +16,7 @@ def normalization(xTrain, xTest):
     return xTrain, xTest
 
 def extract_features(df):
-    df['datetime'] = pd.to_datetime(df['datetime'])
+    df['datetime'] = pd.to_datetime(df['datetime'], format="%Y-%m-%d %H:%M:%S")
     df['year'] = df['datetime'].dt.year
     df['month'] = df['datetime'].dt.month
     df['day'] = df['datetime'].dt.day
