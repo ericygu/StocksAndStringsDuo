@@ -1,9 +1,5 @@
-import json
-import re
 from load_articles import read_articles, write_articles
 from form_dictionary import read_dictionary
-import datetime
-import requests
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -12,7 +8,6 @@ from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.model_selection import KFold, GridSearchCV
 import preprocessing
-import Math
 
 def file_to_numpy(filename):
     """
@@ -57,7 +52,7 @@ def nested_cv(x, y, model, p_grid):
         yHat2 = best_model.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return Math.mean(nested_train_scores), Math.std(nested_train_scores), Math.mean(nested_test_scores), Math.std(nested_test_scores)
+    return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
 
 def kfold_cv(x, y, model):
     nested_train_scores = list()
@@ -81,7 +76,7 @@ def kfold_cv(x, y, model):
         yHat2 = md.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return Math.mean(nested_train_scores), Math.std(nested_train_scores), Math.mean(nested_test_scores), Math.std(nested_test_scores)
+    return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
 
 def main():
     # Retreive datasets

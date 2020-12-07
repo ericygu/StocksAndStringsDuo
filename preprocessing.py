@@ -85,9 +85,11 @@ def update_data():
 
 def process(xTrain, yTrain, xTest, yTest):
     # extract features of datetime column
-    x = extract_features(x)
+    xTrain = extract_features(xTrain)
+    xTest = extract_features(xTest)
     # drop datetime column from y data
-    y = y.drop(columns=['datetime'])
+    yTrain = yTrain.drop(columns=['datetime'])
+    yTest = yTest.drop(columns=['datetime'])
 
     # Pearson graph of features with datetime extracted (can be commented out to not show pearson correlation graph)
     selected_columns, corr = pearson_graph(xTrain, yTrain)
@@ -110,7 +112,7 @@ def process(xTrain, yTrain, xTest, yTest):
     
     print("Preprocessing Done")
     return xTrain_pearson, yTrain, xTest_pearson, yTest
-    
+
 """
 # testing purposes
 def main():
