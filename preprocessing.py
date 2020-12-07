@@ -60,10 +60,16 @@ def pearson_graph(dfx, dfy):
 
 def get_csv():
     # convert data from json to dataframe
-    n = 5194  # number of keywords to include in the dataset
-    x, y = json_to_df(n)
+    # n = 5194  # number of keywords to include in the dataset
+    # x, y = json_to_df(n)
     x = pd.read_csv('X.csv')
     y = pd.read_csv('Y.csv')
+    # extract features of datetime column
+    x = extract_features(x)
+    # drop datetime column from y data
+    y = y.drop(columns=['datetime'])
+    x.to_csv('X_new.csv', index=False)
+    y.to_csv('Y_new.csv', index=False)
     return None
 
 def update_data():
@@ -84,13 +90,6 @@ def update_data():
     return None
 
 def process(xTrain, yTrain, xTest, yTest):
-    # extract features of datetime column
-    xTrain = extract_features(xTrain)
-    xTest = extract_features(xTest)
-    # drop datetime column from y data
-    yTrain = yTrain.drop(columns=['datetime'])
-    yTest = yTest.drop(columns=['datetime'])
-
     # Pearson graph of features with datetime extracted (can be commented out to not show pearson correlation graph)
     selected_columns, corr = pearson_graph(xTrain, yTrain)
     # corr.to_csv("corr_matrix.csv")

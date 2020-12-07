@@ -16,6 +16,9 @@ def file_to_numpy(filename):
     df = pd.read_csv(filename)
     return df.to_numpy()
 
+def df_to_numpy(xTrain, yTrain, xTest, yTest):
+    return xTrain.to_numpy(), yTrain.to_numpy(), xTest.to_numpy(), yTest.to_numpy()
+
 def graph():
     return None
 
@@ -33,10 +36,14 @@ def nested_cv(x, y, model, p_grid):
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
     for train_index, test_index in outer_cv.split(x):
         # split data
-        xTrain, xTest = x[train_index], x[test_index]
-        yTrain, yTest = y[train_index], y[test_index]
+        xTrain = x.iloc[train_index]
+        xTest = x.iloc[test_index]
+        yTrain = y.iloc[train_index]
+        yTest = y.iloc[test_index]
         inner_cv = KFold(n_splits=10, shuffle=True, random_state=1)
         xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
+
+        xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
 
         # Scoring metric is roc_auc_score (precision and recall)
         clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2_score', cv=inner_cv, refit=True)
@@ -52,7 +59,7 @@ def nested_cv(x, y, model, p_grid):
         yHat2 = best_model.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
+    return np.mean(nested_train_scores), np.std(nested_train_scores), np.mean(nested_test_scores), np.std(nested_test_scores)
 
 def kfold_cv(x, y, model):
     nested_train_scores = list()
@@ -61,9 +68,13 @@ def kfold_cv(x, y, model):
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
     for train_index, test_index in outer_cv.split(x):
         # split data
-        xTrain, xTest = x[train_index], x[test_index]
-        yTrain, yTest = y[train_index], y[test_index]
+        xTrain = x.iloc[train_index]
+        xTest = x.iloc[test_index]
+        yTrain = y.iloc[train_index]
+        yTest = y.iloc[test_index]
         xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
+
+        xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
 
         md = model.fit(xTrain, yTrain)
 
@@ -76,31 +87,32 @@ def kfold_cv(x, y, model):
         yHat2 = md.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
+    return np.mean(nested_train_scores), np.std(nested_train_scores), np.mean(nested_test_scores), np.std(nested_test_scores)
 
 def main():
     # Retreive datasets
     # preprocessing.update_data()
-    # preprocessing.get_csv()
+    preprocessing.get_csv()
 
-    x = file_to_numpy("X.csv")
-    y = file_to_numpy("Y.csv")
+    x = pd.read_csv("X.csv")
+    y = pd.read_csv("Y.csv")
 
     # parameters being optimized, NEEDS EDITING
-    """
-    p_grid = {"C": [1, 10, 100],
-          "gamma": [.01, .1]}
-    """
     p_grid_lasso = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
     p_grid_ridge = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
     p_grid_enet = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
                     "l1_ratio": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]}
     
     # Models and scores
+    print("starting")
     lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x,y,LinearRegression())
+    print("done with lr")
     lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x,y,Lasso(),p_grid_lasso)
+    print("done with lasso")
     ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x,y,Ridge(),p_grid_ridge)
+    print("done with ridge")
     elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x,y,ElasticNet(),p_grid_enet)
+    print("done with elastic net")
 
     """
     #------------------------------------------------
