@@ -7,7 +7,6 @@ from sklearn.decomposition import PCA
 import preprocessing
 from tqdm import tqdm
 
-
 def file_to_numpy(filename):
     """
     Read an input file and convert it to numpy
@@ -15,14 +14,8 @@ def file_to_numpy(filename):
     df = pd.read_csv(filename)
     return df.to_numpy()
 
-
 def df_to_numpy(xTrain, yTrain, xTest, yTest):
     return xTrain.to_numpy(), yTrain.to_numpy(), xTest.to_numpy(), yTest.to_numpy()
-
-
-def graph():
-    return None
-
 
 def nested_cv(x, y, model, p_grid):
     # nested cv method can be condensed with the following code:
