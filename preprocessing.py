@@ -66,7 +66,7 @@ def get_csv():
     y = pd.read_csv('Y_orig.csv')
     return None
 
-def update_data();
+def update_data():
     # Acquire dataset
     # Don't run this again, it generates new data and replaces what we have. We will have to write something that adds to current data later.
     # I took care of reading from the current data files and converting them to dataframes/csv. -Nathan
@@ -109,7 +109,7 @@ def process(xTrain, yTrain, xTest, yTest):
     """
     
     print("Preprocessing Done")
-    return xTrain, yTrain, xTest, yTest
+    return xTrain,_pearson, yTrain, xTest_pearson, yTest
 
 # testing purposes
 def main():
