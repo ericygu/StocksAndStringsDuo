@@ -68,7 +68,7 @@ def nested_cv(x, y, model, p_grid):
         yHat2 = best_model.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return mean(nested_train_scores), stdev(nested_train_scores), mean(nested_test_scores), stdev(nested_test_scores),nested_train_scores, nested_test_scores, nested_params
+    return nested_train_scores, nested_test_scores, nested_params
 
 
 def kfold_cv(x, y, model):
