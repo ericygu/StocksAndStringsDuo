@@ -1,4 +1,4 @@
-import numpy as np
+from statistics import mean, stdev
 import pandas as pd
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
@@ -59,7 +59,7 @@ def nested_cv(x, y, model, p_grid):
         yHat2 = best_model.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
+    return mean(nested_train_scores), stdev(nested_train_scores), mean(nested_test_scores), stdev(nested_test_scores)
 
 
 def kfold_cv(x, y, model):
@@ -88,7 +88,7 @@ def kfold_cv(x, y, model):
         yHat2 = md.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
+    return mean(nested_train_scores), stdev(nested_train_scores), mean(nested_test_scores), stdev(nested_test_scores)
 
 
 def main():
