@@ -32,8 +32,8 @@ def main():
 
     xTrain = file_to_numpy("xTrain_pearson.csv")
     xTest = file_to_numpy("xTest_pearson.csv")
-    yTrain = file_to_numpy("yTrain")
-    yTest = file_to_numpy("yTest")
+    yTrain = file_to_numpy("yTrain.csv")
+    yTest = file_to_numpy("yTest.csv")
 
     # temp
     x_train = xTrain
