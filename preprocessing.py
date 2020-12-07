@@ -18,6 +18,7 @@ def normalization(xTrain, xTest):
     xTest = pd.DataFrame(xTest, columns=cols)
     return xTrain, xTest
 
+
 def extract_features(df):
     df['datetime'] = pd.to_datetime(df['datetime'], format="%Y-%m-%d %H:%M:%S")
     """
@@ -35,28 +36,30 @@ def extract_features(df):
     df = df.drop(columns=['datetime'])
     return df
 
+
 # use pearson correlation to remove redundant features and features with nan correlation to stock price change
 def pearson_graph(dfx, dfy):
     df = dfx.copy(deep=True)
-    #df['target'] = dfy['stock_change']
+    # df['target'] = dfy['stock_change']
     df.insert(loc=0, column='y_target', value=dfy['stock_change'])
     corr = df.corr(method='pearson')
     # sns.heatmap(correlation_matrix, annot=True)
-    #fig, ax = plt.subplots(figsize=(10, 10))
-    #sns.heatmap(correlation_matrix)
-    #plt.show()
+    # fig, ax = plt.subplots(figsize=(10, 10))
+    # sns.heatmap(correlation_matrix)
+    # plt.show()
     columns = np.full((corr.shape[0],), True, dtype=bool)
     for i in tqdm(range(corr.shape[0])):
-        if pd.isnull(corr.iloc[0,i]):
+        if pd.isnull(corr.iloc[0, i]):
             if columns[i]:
                 columns[i] = False
         else:
-            for j in range(i+1, corr.shape[0]):
-                if corr.iloc[i,j] >= 0.9:
+            for j in range(i + 1, corr.shape[0]):
+                if corr.iloc[i, j] >= 0.9:
                     if columns[j]:
                         columns[j] = False
     selected_columns = df.columns[columns]
     return selected_columns, corr
+
 
 def get_csv():
     # convert data from json to dataframe
@@ -66,10 +69,11 @@ def get_csv():
     y = pd.read_csv('Y.csv')
     return None
 
+
 def update_data():
-    # Acquire dataset
-    # Don't run this again, it generates new data and replaces what we have. We will have to write something that adds to current data later.
-    # I took care of reading from the current data files and converting them to dataframes/csv. -Nathan
+    # Acquire dataset Don't run this again, it generates new data and replaces what we have. We will have to write
+    # something that adds to current data later. I took care of reading from the current data files and converting
+    # them to dataframes/csv. -Nathan
     """
     exec(open("./load_articles.py").read())
     exec(open("./form_dictionary.py").read())
@@ -82,6 +86,7 @@ def update_data():
     exec(open("./form_csv.py").read())
     """
     return None
+
 
 def process(xTrain, yTrain, xTest, yTest):
     # extract features of datetime column
@@ -109,9 +114,10 @@ def process(xTrain, yTrain, xTest, yTest):
     xTest.to_csv("xTest.csv", index=False)
     xTest_pearson.to_csv("xTest.csv", index=False)
     """
-    
+
     print("Preprocessing Done")
     return xTrain_pearson, yTrain, xTest_pearson, yTest
+
 
 """
 # testing purposes

@@ -9,6 +9,7 @@ from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.model_selection import KFold, GridSearchCV
 import preprocessing
 
+
 def file_to_numpy(filename):
     """
     Read an input file and convert it to numpy
@@ -16,8 +17,10 @@ def file_to_numpy(filename):
     df = pd.read_csv(filename)
     return df.to_numpy()
 
+
 def graph():
     return None
+
 
 def nested_cv(x, y, model, p_grid):
     # nested cv method can be condensed with the following code:
@@ -42,7 +45,7 @@ def nested_cv(x, y, model, p_grid):
         clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2_score', cv=inner_cv, refit=True)
         SUCKONTHISERIC = clf.fit(xTrain, yTrain)
         best_model = SUCKONTHISERIC.best_estimator_
-    
+
         # Train Score
         yHat1 = best_model.predict(xTrain)
         r2 = r2_score(yTrain, yHat1)
@@ -54,10 +57,11 @@ def nested_cv(x, y, model, p_grid):
         nested_test_scores.append(r2)
     return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
 
+
 def kfold_cv(x, y, model):
     nested_train_scores = list()
     nested_test_scores = list()
-    
+
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
     for train_index, test_index in outer_cv.split(x):
         # split data
@@ -78,6 +82,7 @@ def kfold_cv(x, y, model):
         nested_test_scores.append(r2)
     return mean(nested_train_scores), std(nested_train_scores), mean(nested_test_scores), std(nested_test_scores)
 
+
 def main():
     # Retreive datasets
     # preprocessing.update_data()
@@ -94,13 +99,13 @@ def main():
     p_grid_lasso = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
     p_grid_ridge = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
     p_grid_enet = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-                    "l1_ratio": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]}
-    
+                   "l1_ratio": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]}
+
     # Models and scores
-    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x,y,LinearRegression())
-    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x,y,Lasso(),p_grid_lasso)
-    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x,y,Ridge(),p_grid_ridge)
-    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x,y,ElasticNet(),p_grid_enet)
+    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x, y, LinearRegression())
+    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x, y, Lasso(), p_grid_lasso)
+    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x, y, Ridge(), p_grid_ridge)
+    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x, y, ElasticNet(), p_grid_enet)
 
     """
     #------------------------------------------------
@@ -137,9 +142,12 @@ def main():
 
     # Print Statistics
     print("Model R^2 Scores")
-    print("Linear Regression (Closed): [train]{} [test]{}".format(lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev))
-    print("Lasso Regression: [train]{} [test]{}".format(lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev))
-    print("Ridge Regression: [train]{} [test]{}".format(ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev))
+    print("Linear Regression (Closed): [train]{} [test]{}".format(lr_trainScore, lr_trainStdev, lr_testScore,
+                                                                  lr_testStdev))
+    print(
+        "Lasso Regression: [train]{} [test]{}".format(lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev))
+    print(
+        "Ridge Regression: [train]{} [test]{}".format(ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev))
     print("Elastic Net: [train]{} [test]{}".format(elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev))
 
 

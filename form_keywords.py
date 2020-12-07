@@ -3,7 +3,7 @@ from load_articles import read_articles, write_articles
 from form_dictionary import read_dictionary
 
 
-def parse_keywords(articles, dictionary):
+def parse_keywords(article, dictionary):
     def get_keywords(text, dictionary):
         word_list = text.split(' ')
         word_ratio = {word: text.count(word) / len(word_list)
@@ -15,10 +15,10 @@ def parse_keywords(articles, dictionary):
             keywords.append(word)
         return keywords
 
-    for article in articles:
+    for article in article:
         article['keywords'] = get_keywords(
             article['title'] + ' ' + article['description'], dictionary)
-    return articles
+    return article
 
 
 if __name__ == '__main__':
