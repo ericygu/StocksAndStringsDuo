@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
-from sklearn.decomposition import PCA
 
 def normalization(xTrain, xTest):
     std_scale = preprocessing.StandardScaler(with_mean=False)
@@ -84,12 +83,6 @@ def process(xTrain, yTrain, xTest, yTest):
     # normalize the x data
     xTrain, xTest = normalization(xTrain, xTest)
 
-    # PCA (number of components chosen such that the amount of variance 
-    # that needs to be explained is greater than the percentage specified by n_components)
-    sklearn_PCA = PCA(n_components=0.95, svd_solver='full')
-    xTrainPCA = sklearn_PCA.fit_transform(xTrain_pearson)
-    xTestPCA = sklearn_PCA.transform(xTest_pearson)
-
     """
     # convert dataframes to csv files.
     xTrain.to_csv("xTrain.csv", index=False)
@@ -97,7 +90,7 @@ def process(xTrain, yTrain, xTest, yTest):
     xTest.to_csv("xTest.csv", index=False)
     xTest_pearson.to_csv("xTest.csv", index=False)
     """
-    return xTrainPCA, yTrain, xTestPCA, yTest
+    return xTrain_pearson, yTrain, xTest_pearson, yTest
 
 
 """

@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.model_selection import KFold, GridSearchCV
+from sklearn.decomposition import PCA
 import preprocessing
 from tqdm import tqdm
 
@@ -44,7 +45,12 @@ def nested_cv(x, y, model, p_grid):
         inner_cv = KFold(n_splits=5, shuffle=True, random_state=1)
         xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
 
-        xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
+        # PCA (number of components chosen such that the amount of variance 
+        # that needs to be explained is greater than the percentage specified by n_components)
+        sklearn_PCA = PCA(n_components=0.95, svd_solver='full')
+        xTrain = sklearn_PCA.fit_transform(xTrain)
+        xTest = sklearn_PCA.transform(xTest)
+        # xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
 
         # Scoring metric is roc_auc_score (precision and recall)
         clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2', cv=inner_cv, refit=True)
@@ -76,7 +82,12 @@ def kfold_cv(x, y, model):
         yTest = y.iloc[test_index]
         xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
 
-        xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
+        # PCA (number of components chosen such that the amount of variance 
+        # that needs to be explained is greater than the percentage specified by n_components)
+        sklearn_PCA = PCA(n_components=0.95, svd_solver='full')
+        xTrain = sklearn_PCA.fit_transform(xTrain)
+        xTest = sklearn_PCA.transform(xTest)
+        # xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
 
         md = model.fit(xTrain, yTrain)
 
