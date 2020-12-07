@@ -93,8 +93,6 @@ def process(xTrain, yTrain, xTest, yTest):
     xTest.to_csv("xTest.csv", index=False)
     xTest_pearson.to_csv("xTest.csv", index=False)
     """
-
-    print("Preprocessing Done")
     return xTrain_pearson, yTrain, xTest_pearson, yTest
 
 
