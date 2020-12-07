@@ -58,8 +58,15 @@ def pearson_graph(dfx, dfy):
     selected_columns = df.columns[columns]
     return selected_columns, corr
 
+def get_csv():
+    # convert data from json to dataframe
+    n = 5194  # number of keywords to include in the dataset
+    x, y = json_to_df(n)
+    x = pd.read_csv('X_orig.csv')
+    y = pd.read_csv('Y_orig.csv')
+    return None
 
-def process():
+def update_data();
     # Acquire dataset
     # Don't run this again, it generates new data and replaces what we have. We will have to write something that adds to current data later.
     # I took care of reading from the current data files and converting them to dataframes/csv. -Nathan
@@ -74,23 +81,13 @@ def process():
     # Turning json data to csv data in either numpy format or df format
     exec(open("./form_csv.py").read())
     """
-    # convert data from json to dataframe
-    #n = 5194  # number of keywords to include in the dataset
-    #x, y = json_to_df(n)
-    x = pd.read_csv('X.csv')
-    y = pd.read_csv('Y.csv')
+    return None
 
+def process(xTrain, yTrain, xTest, yTest):
     # extract features of datetime column
     x = extract_features(x)
     # drop datetime column from y data
     y = y.drop(columns=['datetime'])
-
-    # split data into training set and test set
-    xTrain, xTest, yTrain, yTest = ms.train_test_split(x, y, test_size=0.2)
-    xTrain.to_csv("xTrain_base.csv", index=False)
-    xTest.to_csv("xTest_base.csv", index=False)
-    yTrain.to_csv("yTrain.csv", index=False)
-    yTest.to_csv("yTest.csv", index=False)
 
     # Pearson graph of features with datetime extracted (can be commented out to not show pearson correlation graph)
     selected_columns, corr = pearson_graph(xTrain, yTrain)
@@ -103,15 +100,16 @@ def process():
     xTrain_pearson = xTrain[selected_columns[1:]]
     xTest_pearson = xTest[selected_columns[1:]]
 
-    # convert dataframes to csv files
+    # convert dataframes to csv files.
+    """
     xTrain.to_csv("xTrain.csv", index=False)
     xTrain_pearson.to_csv("xTrain_pearson.csv", index=False)
     xTest.to_csv("xTest.csv", index=False)
     xTest_pearson.to_csv("xTest_pearson.csv", index=False)
+    """
     
     print("Preprocessing Done")
-    return None
-
+    return xTrain, yTrain, xTest, yTest
 
 # testing purposes
 def main():
