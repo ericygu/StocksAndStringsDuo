@@ -84,7 +84,9 @@ def main():
     p_grid = {"C": [1, 10, 100],
           "gamma": [.01, .1]}
     """
-    p_grid = {}
+    p_grid_lasso = {}
+    p_grid_ridge = {}
+    p_grid_enet = {}
     
     # Models and scores
     lr_r2_mean, lr_r2_std = kfold_cv(x,y,LinearRegression())
