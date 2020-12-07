@@ -21,7 +21,6 @@ def file_to_numpy(filename):
     df = pd.read_csv(filename)
     return df.to_numpy()
 
-
 def graph():
     return None
 
@@ -32,7 +31,8 @@ def nested_cv(x, y, model, p_grid):
     cv = KFold(n_splits=4)
     scores = cross_val_score(pipeline, X, y, cv = cv)
     """
-    nested_scores = list()
+    nested_train_scores = list()
+    nested_test_scores = list()
 
     # nested cv
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
@@ -47,15 +47,22 @@ def nested_cv(x, y, model, p_grid):
         clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2_score', cv=inner_cv, refit=True)
         eric_saves_the_day = clf.fit(xTrain, yTrain)
         best_model = eric_saves_the_day.best_estimator_
-        yHat = best_model.predict(xTest)
+    
+        # Train Score
+        yHat1 = best_model.predict(xTrain)
+        r2 = r2_score(yTrain, yHat1)
+        nested_train_scores.append(r2)
 
-        # Scoring
-        r2 = r2_score(yTest, yHat)
-        nested_scores.append(r2)
-    return Math.mean(nested_scores), Math.std(nested_scores)
+        # Test Score
+        yHat2 = best_model.predict(xTest)
+        r2 = r2_score(yTest, yHat2)
+        nested_test_scores.append(r2)
+    return Math.mean(nested_train_scores), Math.std(nested_train_scores), Math.mean(nested_test_scores), Math.std(nested_test_scores)
 
 def kfold_cv(x, y, model):
-    nested_scores = list()
+    nested_train_scores = list()
+    nested_test_scores = list()
+    
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
     for train_index, test_index in outer_cv.split(x):
         # split data
@@ -63,13 +70,18 @@ def kfold_cv(x, y, model):
         yTrain, yTest = y[train_index], y[test_index]
         xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
 
-        lr = model.fit(xTrain, yTrain)
-        yHat = lr.predict(xTest)
+        md = model.fit(xTrain, yTrain)
 
-        # Scoring
-        r2 = r2_score(yTest, yHat)
-        nested_scores.append(r2)
-    return Math.mean(nested_scores), Math.std(nested_scores)
+        # Train Score
+        yHat1 = md.predict(xTrain)
+        r2 = r2_score(yTrain, yHat1)
+        nested_train_scores.append(r2)
+
+        # Test Score
+        yHat2 = md.predict(xTest)
+        r2 = r2_score(yTest, yHat2)
+        nested_test_scores.append(r2)
+    return Math.mean(nested_train_scores), Math.std(nested_train_scores), Math.mean(nested_test_scores), Math.std(nested_test_scores)
 
 def main():
     # Retreive datasets
@@ -84,15 +96,15 @@ def main():
     p_grid = {"C": [1, 10, 100],
           "gamma": [.01, .1]}
     """
-    p_grid_lasso = {}
+    p_grid_lasso = {"alpha": [0.1, 1]}
     p_grid_ridge = {}
     p_grid_enet = {}
     
     # Models and scores
-    lr_r2_mean, lr_r2_std = kfold_cv(x,y,LinearRegression())
-    lasso_r2_mean, lasso_r2_std = nested_cv(x,y,Lasso(),p_grid)
-    ridge_r2_mean, ridge_r2_std = nested_cv(x,y,Ridge(),p_grid)
-    enet_r2_mean, enet_r2_std = nested_cv(x,y,ElasticNet(),p_grid)
+    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x,y,LinearRegression())
+    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x,y,Lasso(),p_grid_lasso)
+    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x,y,Ridge(),p_grid_ridge)
+    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x,y,ElasticNet(),p_grid_enet)
 
     """
     #------------------------------------------------
@@ -129,10 +141,10 @@ def main():
 
     # Print Statistics
     print("Model R^2 Scores")
-    print("Linear Regression (Closed): [train]{} [test]{}".format(lr_trainAcc, lr_testAcc))
-    print("Lasso Regression: [train]{} [test]{}".format(lasr_trainAcc, lasr_testAcc))
-    print("Ridge Regression: [train]{} [test]{}".format(ridr_trainAcc, ridr_testAcc))
-    print("Elastic Net: [train]{} [test]{}".format(elr_trainAcc, elr_testAcc))
+    print("Linear Regression (Closed): [train]{} [test]{}".format(lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev))
+    print("Lasso Regression: [train]{} [test]{}".format(lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev))
+    print("Ridge Regression: [train]{} [test]{}".format(ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev))
+    print("Elastic Net: [train]{} [test]{}".format(elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev))
 
 
 if __name__ == '__main__':
