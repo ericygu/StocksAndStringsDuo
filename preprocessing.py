@@ -110,10 +110,12 @@ def process(xTrain, yTrain, xTest, yTest):
     
     print("Preprocessing Done")
     return xTrain_pearson, yTrain, xTest_pearson, yTest
-
+    
+"""
 # testing purposes
 def main():
     process()
 
 if __name__ == '__main__':
     main()
+"""

@@ -96,9 +96,10 @@ def main():
     p_grid = {"C": [1, 10, 100],
           "gamma": [.01, .1]}
     """
-    p_grid_lasso = {"alpha": [0.1, 1]}
-    p_grid_ridge = {}
-    p_grid_enet = {}
+    p_grid_lasso = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
+    p_grid_ridge = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
+    p_grid_enet = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+                    "l1_ratio": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]}
     
     # Models and scores
     lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x,y,LinearRegression())
