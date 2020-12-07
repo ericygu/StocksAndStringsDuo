@@ -28,10 +28,10 @@ def graph():
 
 def main():
     # Create xTrain, yTrain, xTest, yTest
-    preprocessing.process()
+    # preprocessing.process()
 
-    xTrain = file_to_numpy("xTrain")
-    xTest = file_to_numpy("xTest")
+    xTrain = file_to_numpy("xTrain_pearson.csv")
+    xTest = file_to_numpy("xTest_pearson.csv")
     yTrain = file_to_numpy("yTrain")
     yTest = file_to_numpy("yTest")
 
