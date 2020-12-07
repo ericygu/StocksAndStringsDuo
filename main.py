@@ -121,35 +121,35 @@ def main():
     lrTrainScores, lrTestScores = kfold_cv(x, y, LinearRegression())
 
     print("Lineaer Regression R^2 Scores")
-    print("Training Mean: ", mean(lrTrainScores), " +/- ", stdev(lrTrainScores))
-    print("Testing Mean: ", mean(lrTestScores), " +/- ", stdev(lrTestScores))
+    print("Training Mean:", mean(lrTrainScores), "+/-", stdev(lrTrainScores))
+    print("Testing Mean:", mean(lrTestScores), "+/-", stdev(lrTestScores))
 
     laTrainScores, laTestScores, laParams = nested_cv(x, y, Lasso(), p_grid_lasso)
 
     print("Lasso Regression R^2 Scores")
-    print("Training Mean: ", mean(laTrainScores), " +/- ", stdev(laTrainScores))
-    print("Testing Mean: ", mean(laTestScores), " +/- ", stdev(laTestScores))
-    print("Best Parameters: ", laParams)
-    print("Individual Train Scores: ", laTrainScores)
-    print("Individual Test Scores: ", laTestScores)
+    print("Training Mean:", mean(laTrainScores), "+/-", stdev(laTrainScores))
+    print("Testing Mean:", mean(laTestScores), "+/-", stdev(laTestScores))
+    print("Best Parameters:", laParams)
+    print("Individual Train Scores:", laTrainScores)
+    print("Individual Test Scores:", laTestScores)
 
     riTrainScores, riTestScores, riParams = nested_cv(x, y, Ridge(), p_grid_ridge)
 
     print("Ridge Regression R^2 Scores")
-    print("Training Mean: ", mean(riTrainScores), " +/- ", stdev(riTrainScores))
-    print("Testing Mean: ", mean(riTestScores), " +/- ", stdev(riTestScores))
-    print("Best Parameters: ", riParams)
-    print("Individual Train Scores: ", riTrainScores)
-    print("Individual Test Scores: ", riTestScores)
+    print("Training Mean:", mean(riTrainScores), "+/-", stdev(riTrainScores))
+    print("Testing Mean:", mean(riTestScores), "+/-", stdev(riTestScores))
+    print("Best Parameters:", riParams)
+    print("Individual Train Scores:", riTrainScores)
+    print("Individual Test Scores:", riTestScores)
 
     elTrainScores,elTestScores, elParams = nested_cv(x, y, ElasticNet(), p_grid_enet)
 
     print("Elastic Net R^2 Scores")
-    print("Training Mean: ", mean(elTrainScores), " +/- ", stdev(elTrainScores))
-    print("Testing Mean: ", mean(elTestScores), " +/- ", stdev(elTestScores))
-    print("Best Parameters: ", elParams)
-    print("Individual Train Scores: ", elTrainScores)
-    print("Individual Test Scores: ", elTestScores)
+    print("Training Mean:", mean(elTrainScores), "+/-", stdev(elTrainScores))
+    print("Testing Mean:", mean(elTestScores), "+/-", stdev(elTestScores))
+    print("Best Parameters:", elParams)
+    print("Individual Train Scores:", elTrainScores)
+    print("Individual Test Scores:", elTestScores)
 
 if __name__ == '__main__':
     main()
