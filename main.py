@@ -8,11 +8,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
-from sklearn.model_selection import KFold
+from sklearn.model_selection import KFold, GridSearchCV
 import preprocessing
-
+import Math
 
 def file_to_numpy(filename):
     """
@@ -23,22 +23,53 @@ def file_to_numpy(filename):
 
 
 def graph():
-    return
+    return None
 
+def nested_cv(x, y, model, p_grid):
+    # nested cv method can be condensed with the following code:
+    """
+    pipeline = Pipeline([('transformer', scalar), ('estimator', clf)])
+    cv = KFold(n_splits=4)
+    scores = cross_val_score(pipeline, X, y, cv = cv)
+    """
+
+    nested_scores = list()
+
+    # nested cv
+    outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
+
+    for train_index, test_index in outer_cv.split(x):
+        # split data
+        xTrain, xTest = x[train_index], x[test_index]
+        yTrain, yTest = y[train_index], y[test_index]
+
+        inner_cv = KFold(n_splits=10, shuffle=True, random_state=1)
+        xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
+
+        # Scoring metric is roc_auc_score (precision and recall)
+        clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2_score', cv=inner_cv, refit=True)
+        eric_saves_the_day = clf.fit(xTrain, yTrain)
+        best_model = eric_saves_the_day.best_estimator_
+
+        yHat = best_model.predict(xTest)
+        r2 = r2_score(yTest, yHat)
+        nested_scores.append(r2)
+
+    return Math.mean(nested_scores), Math.std(nested_scores)
 
 def main():
     # Retreive datasets
     # preprocessing.update_data()
     # preprocessing.get_csv()
+
     x = file_to_numpy("X.csv")
     y = file_to_numpy("Y.csv")
 
-    # preprocessing.process()
-
-    xTrain = file_to_numpy("xTrain_pearson.csv")
-    xTest = file_to_numpy("xTest_pearson.csv")
-    yTrain = file_to_numpy("yTrain.csv")
-    yTest = file_to_numpy("yTest.csv")
+    # parameters being optimized, NEEDS EDITING
+    """
+    p_grid = {"C": [1, 10, 100],
+          "gamma": [.01, .1]}
+    """
 
     # temp
     x_train = xTrain
@@ -46,16 +77,7 @@ def main():
     x_test = xTest
     y_test = yTest
 
-    # K-fold cv
-    """
-    kf = KFold(n_splits=10)
-    for train_index, test_index in kf.split(xTrain):
-        x_train, x_test = xTrain[train_index], xTrain[test_index]
-        y_train, y_test = yTrain[train_index], yTest[test_index]
-    """
-    
-    # cross_val_score
-    # GridSearchCV
+    # SVM
 
     # Linear Regression (Closed)
     lr = LinearRegression().fit(x_train, y_train)
@@ -84,6 +106,8 @@ def main():
     elr_trainAcc = elr.score(x_train, y_train)
     yHat_elr = elr.predict(x_test)
     elr_testAcc = elr.score(x_test, y_test)
+
+    # support 
 
     # Print Statistics
     print("Model R^2 Scores")

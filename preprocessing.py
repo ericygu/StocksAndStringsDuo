@@ -87,11 +87,11 @@ def process(xTrain, yTrain, xTest, yTest):
     # extract features of datetime column
     x = extract_features(x)
     # drop datetime column from y data
-    # y = y.drop(columns=['datetime'])
+    y = y.drop(columns=['datetime'])
 
     # Pearson graph of features with datetime extracted (can be commented out to not show pearson correlation graph)
     selected_columns, corr = pearson_graph(xTrain, yTrain)
-    corr.to_csv("corr_matrix.csv")
+    # corr.to_csv("corr_matrix.csv")
 
     # normalize the x data
     xTrain, xTest = normalization(xTrain, xTest)
@@ -103,9 +103,9 @@ def process(xTrain, yTrain, xTest, yTest):
     # convert dataframes to csv files.
     """
     xTrain.to_csv("xTrain.csv", index=False)
-    xTrain_pearson.to_csv("xTrain_pearson.csv", index=False)
+    xTrain_pearson.to_csv("xTrain.csv", index=False)
     xTest.to_csv("xTest.csv", index=False)
-    xTest_pearson.to_csv("xTest_pearson.csv", index=False)
+    xTest_pearson.to_csv("xTest.csv", index=False)
     """
     
     print("Preprocessing Done")
