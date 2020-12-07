@@ -92,7 +92,7 @@ def kfold_cv(x, y, model):
 
 
 def main():
-    # Retreive datasets
+    # Retrieve datasets
     # preprocessing.update_data()
     x, y = preprocessing.get_csv()
 
@@ -104,22 +104,22 @@ def main():
 
     # Models and scores
     print("starting")
-    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x,y,LinearRegression())
+    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x, y, LinearRegression())
 
     print(lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev)
 
     print("done with lr")
-    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x,y,Lasso(),p_grid_lasso)
+    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x, y, Lasso(), p_grid_lasso)
 
     print(lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev)
 
     print("done with lasso")
-    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x,y,Ridge(),p_grid_ridge)
+    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x, y, Ridge(), p_grid_ridge)
 
     print(ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev)
 
     print("done with ridge")
-    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x,y,ElasticNet(),p_grid_enet)
+    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x, y, ElasticNet(), p_grid_enet)
 
     print(elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev)
 
