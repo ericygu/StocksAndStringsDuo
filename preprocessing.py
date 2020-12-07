@@ -43,7 +43,7 @@ def pearson_graph(dfx, dfy):
                 if columns[j]:
                     columns[j] = False
     selected_columns = dfx.columns[columns[1:]]
-    return selected_columns, corr
+    return selected_columns
 
 
 def get_csv():
@@ -76,7 +76,7 @@ def update_data():
 
 def process(xTrain, yTrain, xTest, yTest):
     # Pearson graph of features with datetime extracted (can be commented out to not show pearson correlation graph)
-    selected_columns, corr = pearson_graph(xTrain, yTrain)
+    selected_columns = pearson_graph(xTrain, yTrain)
     # corr.to_csv("corr_matrix.csv")
 
     # normalize the x data
