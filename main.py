@@ -94,10 +94,7 @@ def kfold_cv(x, y, model):
 def main():
     # Retreive datasets
     # preprocessing.update_data()
-    preprocessing.get_csv()
-
-    x = pd.read_csv("X.csv")
-    y = pd.read_csv("Y.csv")
+    x, y = preprocessing.get_csv()
 
     # parameters being optimized, NEEDS EDITING
     p_grid_lasso = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
