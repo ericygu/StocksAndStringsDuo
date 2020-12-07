@@ -16,13 +16,6 @@ def normalization(xTrain, xTest):
 
 def extract_features(df):
     df['datetime'] = pd.to_datetime(df['datetime'], format="%Y-%m-%d %H:%M:%S")
-    """
-    df['year'] = df['datetime'].dt.year
-    df['month'] = df['datetime'].dt.month
-    df['day'] = df['datetime'].dt.day
-    df['weekday'] = df['datetime'].dt.dayofweek
-    df['hour'] = df['datetime'].dt.hour
-    """
     df.insert(loc=0, column='dt_year', value=df['datetime'].dt.year)
     df.insert(loc=0, column='dt_month', value=df['datetime'].dt.month)
     df.insert(loc=0, column='dt_day', value=df['datetime'].dt.day)
@@ -35,20 +28,15 @@ def extract_features(df):
 # use pearson correlation to remove redundant features and features with nan correlation to stock price change
 def pearson_graph(dfx, dfy):
     df = dfx.copy(deep=True)
-    # df['target'] = dfy['stock_change']
     df.insert(loc=0, column='y_target', value=dfy['stock_change'])
-    corr = df.corr(method='pearson')
-    # sns.heatmap(correlation_matrix, annot=True)
-    # fig, ax = plt.subplots(figsize=(10, 10))
-    # sns.heatmap(correlation_matrix)
-    # plt.show()
+    corr = df.corr(method='pearson').to_numpy()
     columns = np.full((corr.shape[0],), True, dtype=bool)
     for i in tqdm(range(corr.shape[0])):
-        if pd.isnull(corr.iloc[0, i]):
+        if pd.isnull(corr[0,i]):
             if columns[i]:
                 columns[i] = False
-        for j in range(i + 1, corr.shape[0]):
-            if corr.iloc[i, j] >= 0.9:
+        for j in range(i+1, corr.shape[0]):
+            if corr[i,j] >= 0.9:
                 if columns[j]:
                     columns[j] = False
     selected_columns = df.columns[columns]
@@ -56,9 +44,6 @@ def pearson_graph(dfx, dfy):
 
 
 def get_csv():
-    # convert data from json to dataframe
-    # n = 5194  # number of keywords to include in the dataset
-    # x, y = json_to_df(n)
     x = pd.read_csv('X.csv')
     y = pd.read_csv('Y.csv')
     # extract features of datetime column
