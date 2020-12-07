@@ -33,6 +33,7 @@ def nested_cv(x, y, model, p_grid):
     """
     nested_train_scores = list()
     nested_test_scores = list()
+    nested_params = list()
 
     # nested cv
     outer_cv = KFold(n_splits=5, shuffle=True, random_state=1)
@@ -56,6 +57,7 @@ def nested_cv(x, y, model, p_grid):
         clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2', cv=inner_cv, refit=True)
         fitter = clf.fit(xTrain, yTrain)
         best_model = fitter.best_estimator_
+        nested_params.append(fitter.best_params_)
 
         # Train Score
         yHat1 = best_model.predict(xTrain)
@@ -66,7 +68,7 @@ def nested_cv(x, y, model, p_grid):
         yHat2 = best_model.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return mean(nested_train_scores), stdev(nested_train_scores), mean(nested_test_scores), stdev(nested_test_scores)
+    return mean(nested_train_scores), stdev(nested_train_scores), mean(nested_test_scores), stdev(nested_test_scores),nested_train_scores, nested_test_scores, nested_params
 
 
 def kfold_cv(x, y, model):
@@ -100,7 +102,7 @@ def kfold_cv(x, y, model):
         yHat2 = md.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return mean(nested_train_scores), stdev(nested_train_scores), mean(nested_test_scores), stdev(nested_test_scores)
+    return nested_train_scores, nested_test_scores
 
 
 def main():
@@ -116,69 +118,38 @@ def main():
 
     # Models and scores
     print("starting")
-    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x, y, LinearRegression())
+    lrTrainScores, lrTestScores = kfold_cv(x, y, LinearRegression())
 
-    print(lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev)
+    print("Lineaer Regression R^2 Scores")
+    print("Training Mean: ", mean(lrTrainScores), " +/- ", stdev(lrTrainScores))
+    print("Testing Mean: ", mean(lrTestScores), " +/- ", stdev(lrTestScores))
 
-    print("done with lr")
-    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x, y, Lasso(), p_grid_lasso)
+    laTrainScores, laTestScores, laParams = nested_cv(x, y, Lasso(), p_grid_lasso)
 
-    print(lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev)
+    print("Lasso Regression R^2 Scores")
+    print("Training Mean: ", mean(laTrainScores), " +/- ", stdev(laTrainScores))
+    print("Testing Mean: ", mean(laTestScores), " +/- ", stdev(laTestScores))
+    print("Best Parameters: ", laParams)
+    print("Individual Train Scores: ", laTrainScores)
+    print("Individual Test Scores: ", laTestScores)
 
-    print("done with lasso")
-    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x, y, Ridge(), p_grid_ridge)
+    riTrainScores, riTestScores, riParams = nested_cv(x, y, Ridge(), p_grid_ridge)
 
-    print(ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev)
+    print("Ridge Regression R^2 Scores")
+    print("Training Mean: ", mean(riTrainScores), " +/- ", stdev(riTrainScores))
+    print("Testing Mean: ", mean(riTestScores), " +/- ", stdev(riTestScores))
+    print("Best Parameters: ", riParams)
+    print("Individual Train Scores: ", riTrainScores)
+    print("Individual Test Scores: ", riTestScores)
 
-    print("done with ridge")
-    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x, y, ElasticNet(), p_grid_enet)
+    elTrainScores,elTestScores, elParams = nested_cv(x, y, ElasticNet(), p_grid_enet)
 
-    print(elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev)
-
-    print("done with elastic net")
-
-    """
-    #------------------------------------------------
-    # Models Original Setup (Old and can be removed)
-    #------------------------------------------------
-    # Linear Regression (Closed)
-    lr = LinearRegression().fit(x_train, y_train)
-    yHat_lr = lr.predict(x_train)
-    lr_trainAcc = lr.score(x_train, y_train)
-    yHat_lr = lr.predict(x_test)
-    lr_testAcc = lr.score(x_test, y_test)
-
-    # Lasso Regression
-    lasr = Lasso().fit(x_train, y_train)
-    yHat_lasr = lasr.predict(x_train)
-    lasr_trainAcc = lasr.score(x_train, y_train)
-    yHat_lasr = lasr.predict(x_test)
-    lasr_testAcc = lasr.score(x_test, y_test)
-
-    # Ridge Regression
-    ridr = Ridge().fit(x_train, y_train)
-    yHat_ridr = ridr.predict(x_train)
-    ridr_trainAcc = ridr.score(x_train, y_train)
-    yHat_ridr = ridr.predict(x_test)
-    ridr_testAcc = ridr.score(x_test, y_test)
-
-    # ElasticNet
-    elr = ElasticNet().fit(x_train, y_train)
-    yHat_elr = elr.predict(x_train)
-    elr_trainAcc = elr.score(x_train, y_train)
-    yHat_elr = elr.predict(x_test)
-    elr_testAcc = elr.score(x_test, y_test)
-    """
-    """
-
-    # Print Statistics
-    print("Model R^2 Scores")
-    print("Linear Regression (Closed): [train]{} [test]{}".format(lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev))
-    print("Lasso Regression: [train]{} [test]{}".format(lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev))
-    print("Ridge Regression: [train]{} [test]{}".format(ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev))
-    print("Elastic Net: [train]{} [test]{}".format(elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev))
-"""
-
+    print("Elastic Net R^2 Scores")
+    print("Training Mean: ", mean(elTrainScores), " +/- ", stdev(elTrainScores))
+    print("Testing Mean: ", mean(elTestScores), " +/- ", stdev(elTestScores))
+    print("Best Parameters: ", elParams)
+    print("Individual Train Scores: ", elTrainScores)
+    print("Individual Test Scores: ", elTestScores)
 
 if __name__ == '__main__':
     main()
