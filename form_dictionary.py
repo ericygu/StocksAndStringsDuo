@@ -2,7 +2,6 @@ import json
 from load_articles import read_articles
 
 
-# think about how keywords are set to values
 # format {'potato': 4, 'oil': 1}
 def insert_dictionary(str, dictionary):
     global net_words

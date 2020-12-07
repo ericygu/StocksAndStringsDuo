@@ -1,9 +1,5 @@
-from load_articles import read_articles, write_articles
-from form_dictionary import read_dictionary
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.model_selection import KFold, GridSearchCV
@@ -17,8 +13,10 @@ def file_to_numpy(filename):
     df = pd.read_csv(filename)
     return df.to_numpy()
 
+
 def df_to_numpy(xTrain, yTrain, xTest, yTest):
     return xTrain.to_numpy(), yTrain.to_numpy(), xTest.to_numpy(), yTest.to_numpy()
+
 
 def graph():
     return None
@@ -129,7 +127,7 @@ def main():
     print(elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev)
 
     print("done with elastic net")
-    
+
     """
     #------------------------------------------------
     # Models Original Setup (Old and can be removed)

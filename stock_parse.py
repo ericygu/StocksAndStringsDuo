@@ -2,7 +2,7 @@
 
 # relies on JSON input of the form
 # {title -> string, author -> string, time -> datetime, text -> string}
-import json  # will use
+import json
 import datetime
 import requests
 import pandas as pd

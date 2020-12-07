@@ -1,4 +1,3 @@
-import json
 from load_articles import read_articles, write_articles
 from form_dictionary import read_dictionary
 

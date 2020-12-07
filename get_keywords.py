@@ -1,5 +1,4 @@
 import json
-from load_articles import read_articles
 from value_keywords import read_valuation
 import nltk
 
