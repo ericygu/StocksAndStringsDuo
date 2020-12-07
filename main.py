@@ -34,14 +34,14 @@ def nested_cv(x, y, model, p_grid):
     nested_test_scores = list()
 
     # nested cv
-    outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
+    outer_cv = KFold(n_splits=5, shuffle=True, random_state=1)
     for train_index, test_index in tqdm(outer_cv.split(x)):
         # split data
         xTrain = x.iloc[train_index]
         xTest = x.iloc[test_index]
         yTrain = y.iloc[train_index]
         yTest = y.iloc[test_index]
-        inner_cv = KFold(n_splits=10, shuffle=True, random_state=1)
+        inner_cv = KFold(n_splits=5, shuffle=True, random_state=1)
         xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
 
         xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
@@ -67,7 +67,7 @@ def kfold_cv(x, y, model):
     nested_train_scores = list()
     nested_test_scores = list()
 
-    outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
+    outer_cv = KFold(n_splits=5, shuffle=True, random_state=1)
     for train_index, test_index in tqdm(outer_cv.split(x)):
         # split data
         xTrain = x.iloc[train_index]
