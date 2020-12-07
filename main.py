@@ -27,7 +27,12 @@ def graph():
 
 
 def main():
-    # Create xTrain, yTrain, xTest, yTest
+    # Retreive datasets
+    # preprocessing.update_data()
+    # preprocessing.get_csv()
+    x = file_to_numpy("X.csv")
+    y = file_to_numpy("Y.csv")
+
     # preprocessing.process()
 
     xTrain = file_to_numpy("xTrain_pearson.csv")

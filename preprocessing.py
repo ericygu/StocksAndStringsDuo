@@ -62,8 +62,8 @@ def get_csv():
     # convert data from json to dataframe
     n = 5194  # number of keywords to include in the dataset
     x, y = json_to_df(n)
-    x = pd.read_csv('X_orig.csv')
-    y = pd.read_csv('Y_orig.csv')
+    x = pd.read_csv('X.csv')
+    y = pd.read_csv('Y.csv')
     return None
 
 def update_data():
@@ -87,7 +87,7 @@ def process(xTrain, yTrain, xTest, yTest):
     # extract features of datetime column
     x = extract_features(x)
     # drop datetime column from y data
-    y = y.drop(columns=['datetime'])
+    # y = y.drop(columns=['datetime'])
 
     # Pearson graph of features with datetime extracted (can be commented out to not show pearson correlation graph)
     selected_columns, corr = pearson_graph(xTrain, yTrain)
@@ -109,7 +109,7 @@ def process(xTrain, yTrain, xTest, yTest):
     """
     
     print("Preprocessing Done")
-    return xTrain,_pearson, yTrain, xTest_pearson, yTest
+    return xTrain_pearson, yTrain, xTest_pearson, yTest
 
 # testing purposes
 def main():
