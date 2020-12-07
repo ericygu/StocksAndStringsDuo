@@ -47,7 +47,7 @@ def nested_cv(x, y, model, p_grid):
         xTrain, yTrain, xTest, yTest = df_to_numpy(xTrain, yTrain, xTest, yTest)
 
         # Scoring metric is roc_auc_score (precision and recall)
-        clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2_score', cv=inner_cv, refit=True)
+        clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2', cv=inner_cv, refit=True)
         fitter = clf.fit(xTrain, yTrain)
         best_model = fitter.best_estimator_
 
