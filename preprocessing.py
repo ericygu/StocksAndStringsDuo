@@ -27,9 +27,12 @@ def extract_features(df):
 
 # use pearson correlation to remove redundant features and features with nan correlation to stock price change
 def pearson_graph(dfx, dfy):
-    df = dfx.copy(deep=True)
-    df.insert(loc=0, column='y_target', value=dfy['stock_change'])
-    corr = df.corr(method='pearson').to_numpy()
+    matrix = dfx.to_numpy()
+    matrix = np.hstack((dfy['stock_change'].to_numpy()[:,np.newaxis], matrix))
+    matrix = matrix.transpose()
+    #valid = ~np.isnan(matrix).any(axis=0)
+    corr = np.ma.corrcoef(matrix)
+    corr = np.ma.getdata(corr)
     columns = np.full((corr.shape[0],), True, dtype=bool)
     for i in tqdm(range(corr.shape[0])):
         if pd.isnull(corr[0,i]):
@@ -39,7 +42,7 @@ def pearson_graph(dfx, dfy):
             if corr[i,j] >= 0.9:
                 if columns[j]:
                     columns[j] = False
-    selected_columns = df.columns[columns]
+    selected_columns = dfx.columns[columns[1:]]
     return selected_columns, corr
 
 
