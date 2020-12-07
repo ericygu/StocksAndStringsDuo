@@ -47,11 +47,10 @@ def pearson_graph(dfx, dfy):
         if pd.isnull(corr.iloc[0, i]):
             if columns[i]:
                 columns[i] = False
-        else:
-            for j in range(i + 1, corr.shape[0]):
-                if corr.iloc[i, j] >= 0.9:
-                    if columns[j]:
-                        columns[j] = False
+        for j in range(i + 1, corr.shape[0]):
+            if corr.iloc[i, j] >= 0.9:
+                if columns[j]:
+                    columns[j] = False
     selected_columns = df.columns[columns]
     return selected_columns, corr
 
@@ -66,9 +65,7 @@ def get_csv():
     x = extract_features(x)
     # drop datetime column from y data
     y = y.drop(columns=['datetime'])
-    x.to_csv('X_new.csv', index=False)
-    y.to_csv('Y_new.csv', index=False)
-    return None
+    return x, y
 
 
 def update_data():
