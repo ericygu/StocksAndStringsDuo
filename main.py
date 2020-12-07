@@ -32,17 +32,14 @@ def nested_cv(x, y, model, p_grid):
     cv = KFold(n_splits=4)
     scores = cross_val_score(pipeline, X, y, cv = cv)
     """
-
     nested_scores = list()
 
     # nested cv
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
-
     for train_index, test_index in outer_cv.split(x):
         # split data
         xTrain, xTest = x[train_index], x[test_index]
         yTrain, yTest = y[train_index], y[test_index]
-
         inner_cv = KFold(n_splits=10, shuffle=True, random_state=1)
         xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
 
@@ -50,11 +47,28 @@ def nested_cv(x, y, model, p_grid):
         clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2_score', cv=inner_cv, refit=True)
         eric_saves_the_day = clf.fit(xTrain, yTrain)
         best_model = eric_saves_the_day.best_estimator_
-
         yHat = best_model.predict(xTest)
+
+        # Scoring
         r2 = r2_score(yTest, yHat)
         nested_scores.append(r2)
+    return Math.mean(nested_scores), Math.std(nested_scores)
 
+def kfold_cv(x, y, model):
+    nested_scores = list()
+    outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
+    for train_index, test_index in outer_cv.split(x):
+        # split data
+        xTrain, xTest = x[train_index], x[test_index]
+        yTrain, yTest = y[train_index], y[test_index]
+        xTrain, yTrain, xTest, yTest = preprocessing.process(xTrain, yTrain, xTest, yTest)
+
+        lr = model.fit(xTrain, yTrain)
+        yHat = lr.predict(xTest)
+
+        # Scoring
+        r2 = r2_score(yTest, yHat)
+        nested_scores.append(r2)
     return Math.mean(nested_scores), Math.std(nested_scores)
 
 def main():
@@ -70,15 +84,18 @@ def main():
     p_grid = {"C": [1, 10, 100],
           "gamma": [.01, .1]}
     """
+    p_grid = {}
+    
+    # Models and scores
+    lr_r2_mean, lr_r2_std = kfold_cv(x,y,LinearRegression())
+    lasso_r2_mean, lasso_r2_std = nested_cv(x,y,Lasso(),p_grid)
+    ridge_r2_mean, ridge_r2_std = nested_cv(x,y,Ridge(),p_grid)
+    enet_r2_mean, enet_r2_std = nested_cv(x,y,ElasticNet(),p_grid)
 
-    # temp
-    x_train = xTrain
-    y_train = yTrain
-    x_test = xTest
-    y_test = yTest
-
-    # SVM
-
+    """
+    #------------------------------------------------
+    # Models Original Setup (Old and can be removed)
+    #------------------------------------------------
     # Linear Regression (Closed)
     lr = LinearRegression().fit(x_train, y_train)
     yHat_lr = lr.predict(x_train)
@@ -106,8 +123,7 @@ def main():
     elr_trainAcc = elr.score(x_train, y_train)
     yHat_elr = elr.predict(x_test)
     elr_testAcc = elr.score(x_test, y_test)
-
-    # support 
+    """
 
     # Print Statistics
     print("Model R^2 Scores")
