@@ -1,9 +1,5 @@
-from load_articles import read_articles, write_articles
-from form_dictionary import read_dictionary
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.model_selection import KFold, GridSearchCV
@@ -17,8 +13,10 @@ def file_to_numpy(filename):
     df = pd.read_csv(filename)
     return df.to_numpy()
 
+
 def df_to_numpy(xTrain, yTrain, xTest, yTest):
     return xTrain.to_numpy(), yTrain.to_numpy(), xTest.to_numpy(), yTest.to_numpy()
+
 
 def graph():
     return None
@@ -61,7 +59,8 @@ def nested_cv(x, y, model, p_grid):
         yHat2 = best_model.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return np.mean(nested_train_scores), np.std(nested_train_scores), np.mean(nested_test_scores), np.std(nested_test_scores)
+    return np.mean(nested_train_scores), np.std(nested_train_scores), np.mean(nested_test_scores), np.std(
+        nested_test_scores)
 
 
 def kfold_cv(x, y, model):
@@ -90,7 +89,8 @@ def kfold_cv(x, y, model):
         yHat2 = md.predict(xTest)
         r2 = r2_score(yTest, yHat2)
         nested_test_scores.append(r2)
-    return np.mean(nested_train_scores), np.std(nested_train_scores), np.mean(nested_test_scores), np.std(nested_test_scores)
+    return np.mean(nested_train_scores), np.std(nested_train_scores), np.mean(nested_test_scores), np.std(
+        nested_test_scores)
 
 
 def main():
@@ -109,15 +109,15 @@ def main():
 
     # Models and scores
     print("starting")
-    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x,y,LinearRegression())
+    lr_trainScore, lr_trainStdev, lr_testScore, lr_testStdev = kfold_cv(x, y, LinearRegression())
     print("done with lr")
-    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x,y,Lasso(),p_grid_lasso)
+    lasr_trainScore, lasr_trainStdev, lasr_testScore, lasr_testStdev = nested_cv(x, y, Lasso(), p_grid_lasso)
     print("done with lasso")
-    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x,y,Ridge(),p_grid_ridge)
+    ridr_trainScore, ridr_trainStdev, ridr_testScore, ridr_testStdev = nested_cv(x, y, Ridge(), p_grid_ridge)
     print("done with ridge")
-    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x,y,ElasticNet(),p_grid_enet)
+    elr_trainScore, elr_trainStdev, elr_testScore, elr_testStdev = nested_cv(x, y, ElasticNet(), p_grid_enet)
     print("done with elastic net")
-    
+
     """
     #------------------------------------------------
     # Models Original Setup (Old and can be removed)
