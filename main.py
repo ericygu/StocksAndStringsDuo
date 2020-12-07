@@ -53,31 +53,39 @@ def main():
     # GridSearchCV
 
     # Linear Regression (Closed)
-    lr = LinearRegression.fit_transform(x_train)
+    lr = LinearRegression().fit(x_train, y_train)
+    yHat_lr = lr.predict(x_train)
+    lr_trainAcc = lr.score(x_train, y_train)
     yHat_lr = lr.predict(x_test)
-    lr_testAcc = accuracy_score(y_test, yHat_lr)
+    lr_testAcc = lr.score(x_test, y_test)
 
     # Lasso Regression
-    lasr = Lasso.fit_transform(x_train)
+    lasr = Lasso().fit(x_train, y_train)
+    yHat_lasr = lasr.predict(x_train)
+    lasr_trainAcc = lasr.score(x_train, y_train)
     yHat_lasr = lasr.predict(x_test)
-    lasr_testAcc = accuracy_score(y_test, yHat_lasr)
+    lasr_testAcc = lasr.score(x_test, y_test)
 
     # Ridge Regression
-    ridr = Ridge.fit_transform(x_train)
+    ridr = Ridge().fit(x_train, y_train)
+    yHat_ridr = ridr.predict(x_train)
+    ridr_trainAcc = ridr.score(x_train, y_train)
     yHat_ridr = ridr.predict(x_test)
-    ridr_testAcc = accuracy_score(y_test, yHat_ridr)
+    ridr_testAcc = ridr.score(x_test, y_test)
 
     # ElasticNet
-    elr = ElasticNet.fit_transform(x_train)
+    elr = ElasticNet().fit(x_train, y_train)
+    yHat_elr = elr.predict(x_train)
+    elr_trainAcc = elr.score(x_train, y_train)
     yHat_elr = elr.predict(x_test)
-    elr_testAcc = accuracy_score(y_test, yHat_elr)
+    elr_testAcc = elr.score(x_test, y_test)
 
     # Print Statistics
-    print("Model Accuracies")
-    print("Linear Regression (Closed): ", lr_testAcc)
-    print("Lasso Regression: ", lasr_testAcc)
-    print("Ridge Regression: ", ridr_testAcc)
-    print("Elastic Net: ", elr_testAcc)
+    print("Model R^2 Scores")
+    print("Linear Regression (Closed): [train]{} [test]{}".format(lr_trainAcc, lr_testAcc))
+    print("Lasso Regression: [train]{} [test]{}".format(lasr_trainAcc, lasr_testAcc))
+    print("Ridge Regression: [train]{} [test]{}".format(ridr_trainAcc, ridr_testAcc))
+    print("Elastic Net: [train]{} [test]{}".format(elr_trainAcc, elr_testAcc))
 
 
 if __name__ == '__main__':
