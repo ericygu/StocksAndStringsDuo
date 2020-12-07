@@ -47,11 +47,10 @@ def pearson_graph(dfx, dfy):
         if pd.isnull(corr.iloc[0, i]):
             if columns[i]:
                 columns[i] = False
-        else:
-            for j in range(i + 1, corr.shape[0]):
-                if corr.iloc[i, j] >= 0.9:
-                    if columns[j]:
-                        columns[j] = False
+        for j in range(i + 1, corr.shape[0]):
+            if corr.iloc[i, j] >= 0.9:
+                if columns[j]:
+                    columns[j] = False
     selected_columns = df.columns[columns]
     return selected_columns, corr
 
