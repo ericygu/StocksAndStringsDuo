@@ -34,7 +34,7 @@ def pearson_graph(dfx, dfy):
     corr = np.ma.corrcoef(matrix)
     corr = np.ma.getdata(corr)
     columns = np.full((corr.shape[0],), True, dtype=bool)
-    for i in tqdm(range(corr.shape[0])):
+    for i in range(corr.shape[0]):
         if pd.isnull(corr[0,i]):
             if columns[i]:
                 columns[i] = False

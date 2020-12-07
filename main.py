@@ -4,6 +4,7 @@ from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression, Lasso, Ridge, ElasticNet
 from sklearn.model_selection import KFold, GridSearchCV
 import preprocessing
+from tqdm import tqdm
 
 
 def file_to_numpy(filename):
@@ -34,7 +35,7 @@ def nested_cv(x, y, model, p_grid):
 
     # nested cv
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
-    for train_index, test_index in outer_cv.split(x):
+    for train_index, test_index in tqdm(outer_cv.split(x)):
         # split data
         xTrain = x.iloc[train_index]
         xTest = x.iloc[test_index]
@@ -67,7 +68,7 @@ def kfold_cv(x, y, model):
     nested_test_scores = list()
 
     outer_cv = KFold(n_splits=10, shuffle=True, random_state=1)
-    for train_index, test_index in outer_cv.split(x):
+    for train_index, test_index in tqdm(outer_cv.split(x)):
         # split data
         xTrain = x.iloc[train_index]
         xTest = x.iloc[test_index]
@@ -96,9 +97,9 @@ def main():
     # preprocessing.update_data()
     x, y = preprocessing.get_csv()
 
-    # parameters being optimized, NEEDS EDITING
-    p_grid_lasso = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
-    p_grid_ridge = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}
+    # parameters being optimized, ranges were determined from self-testing.
+    p_grid_lasso = {"alpha": [0.001, 0.01, 0.1, 0.2, 0.4, 0.5, 1, 5]}
+    p_grid_ridge = {"alpha": [0.1, 0.5, 1.0, 5, 10, 20, 30, 40 , 50, 60]}
     p_grid_enet = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
                    "l1_ratio": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]}
 
