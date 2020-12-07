@@ -65,9 +65,7 @@ def get_csv():
     x = extract_features(x)
     # drop datetime column from y data
     y = y.drop(columns=['datetime'])
-    x.to_csv('X_new.csv', index=False)
-    y.to_csv('Y_new.csv', index=False)
-    return None
+    return x, y
 
 
 def update_data():
