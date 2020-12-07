@@ -45,8 +45,8 @@ def nested_cv(x, y, model, p_grid):
 
         # Scoring metric is roc_auc_score (precision and recall)
         clf = GridSearchCV(estimator=model, param_grid=p_grid, scoring='r2_score', cv=inner_cv, refit=True)
-        eric_saves_the_day = clf.fit(xTrain, yTrain)
-        best_model = eric_saves_the_day.best_estimator_
+        SUCKONTHISERIC = clf.fit(xTrain, yTrain)
+        best_model = SUCKONTHISERIC.best_estimator_
     
         # Train Score
         yHat1 = best_model.predict(xTrain)
