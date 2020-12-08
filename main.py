@@ -104,9 +104,9 @@ def main():
     x, y = preprocessing.get_csv()
 
     # parameters being optimized, ranges were determined from self-testing.
-    p_grid_lasso = {"alpha": [0.001, 0.01, 0.1, 0.2, 0.4, 0.5, 1, 5]}
-    p_grid_ridge = {"alpha": [0.1, 0.5, 1.0, 5, 10, 20, 30, 40 , 50, 60]}
-    p_grid_enet = {"alpha": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+    p_grid_lasso = {"alpha": [0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 1]}
+    p_grid_ridge = {"alpha": [0.1, 1.0, 5, 10, 20, 40, 50, 60, 70, 80]}
+    p_grid_enet = {"alpha": [0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
                    "l1_ratio": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]}
 
     # Models and scores
